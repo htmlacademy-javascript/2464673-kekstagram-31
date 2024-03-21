@@ -16,10 +16,10 @@ const createPhotoObject = (id, url, description, likes, comments) => ({
 
 // функция, которая создает объект комментария к фото
 const createCommentObject = (id, avatar, message, name) => ({
-    id: id,
-    avatar: avatar,
-    message: message,
-    name: name
+  id: id,
+  avatar: avatar,
+  message: message,
+  name: name
 });
 
 // функция - генератор случайных чисел
@@ -32,9 +32,9 @@ const getRandomInteger = (a, b) => {
 
 // функция, которая выбирает случайный элемент массива
 const getRandomArreyElement = (array) => {
-  let min = 0;
-  let max = array.length - 1;
-  let random = getRandomInteger(min, max);
+  const min = 0;
+  const max = array.length - 1;
+  const random = getRandomInteger(min, max);
   return array[random];
 };
 

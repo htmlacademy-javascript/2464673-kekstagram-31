@@ -11,9 +11,9 @@ let commentId = 0;
 
 // функция, которая создает массив комментариев к фото
 const getCommentObjectArrey = (qtt) => {
-  let arrayResult = [];
+  const arrayResult = [];
   for (let i = 0; i < qtt; i++) {
-    let randomCommentObject = createCommentObject(
+    const randomCommentObject = createCommentObject(
       commentId,
       'img/avatar-' + getRandomInteger(1, 6) + '.svg',
       getRandomArreyElement(MESSAGES),
@@ -27,9 +27,9 @@ const getCommentObjectArrey = (qtt) => {
 
 // функция, которая создает массив фото-объектов
 function createPhotoObjectArray() {
-  let arrayResultFinish = [];
+  const arrayResultFinish = [];
   for (let i = 0; i < 25; i++) {
-    let id = i + 1;
+    const id = i + 1;
     arrayResultFinish.push(
       createPhotoObject(
         id,
@@ -42,3 +42,4 @@ function createPhotoObjectArray() {
   }
   return arrayResultFinish;
 }
+export {createPhotoObjectArray};
