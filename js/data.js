@@ -13,9 +13,10 @@ let commentId = 0;
 const getCommentObjectArrey = (qtt) => {
   const arrayResult = [];
   for (let i = 0; i < qtt; i++) {
+    const ind = getRandomInteger(1, 6);
     const randomCommentObject = createCommentObject(
       commentId,
-      'img/avatar-' + getRandomInteger(1, 6) + '.svg',
+      `img/avatar-${ind}.svg`,
       getRandomArreyElement(MESSAGES),
       getRandomArreyElement(NAMES)
     );
@@ -33,7 +34,7 @@ function createPhotoObjectArray() {
     arrayResultFinish.push(
       createPhotoObject(
         id,
-        'photos/' + id + '.jpg',
+        `photos/${id}.jpg`,
         getRandomArreyElement(DESCRIPTION),
         getRandomInteger(15, 200),
         getCommentObjectArrey(getRandomInteger(0, 30))

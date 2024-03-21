@@ -5,12 +5,12 @@ const pictureTemplate = document.querySelector('#picture').content.querySelector
 const photoObjectArray = createPhotoObjectArray();
 const listFragment = document.createDocumentFragment(); //пока не разобралась с фрагментом
 
-photoObjectArray.forEach((photo) => {
+photoObjectArray.forEach(({url, description, comments, likes}) => {
   const similarPicture = pictureTemplate.cloneNode(true); // клонируем шаблон
-  similarPicture.querySelector('.picture__img').src = photo.url;
-  similarPicture.querySelector('.picture__img').alt = photo.description;
-  similarPicture.querySelector('.picture__comments').textContent = photo.comments.length;
-  similarPicture.querySelector('.picture__likes').textContent = photo.likes;
+  similarPicture.querySelector('.picture__img').src = url;
+  similarPicture.querySelector('.picture__img').alt = description;
+  similarPicture.querySelector('.picture__comments').textContent = comments.length;
+  similarPicture.querySelector('.picture__likes').textContent = likes;
   listFragment.append(similarPicture);
 });
 
