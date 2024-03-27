@@ -1,11 +1,12 @@
-import {pictureContainer} from './photos.js';
+import {pictureContainer, photoObjectArray} from './photos.js';
 //переменные
 const bigPictureSection = document.querySelector('.big-picture'); //большое окно, которое мы будем заполнять данными
-const bigPictureImg = bigPictureSection.querySelector('.big-picture__img img'); //адрес изображения
+const bigPictureImg = bigPictureSection.querySelector('.big-picture__img').querySelector('img'); //адрес изображения
 const likesCount = bigPictureSection.querySelector('.likes-count'); //Количество лайков
 const commentsCountShow = bigPictureSection.querySelector('.social__comment-shown-count');//количество показанных комментариев
-//const socialCommentTotalCount = bigPictureSection.querySelector('.social__comment-total-count'); //Общее количество комментариев к фотографии
+const socialCommentTotalCount = bigPictureSection.querySelector('.social__comment-total-count'); //Общее количество комментариев к фотографии
 const socialComments = bigPictureSection.querySelector('.social__comments'); //блок для комментариев
+const socialComment = bigPictureSection.querySelector('.social__comment');
 const socialCaption = bigPictureSection.querySelector('.social__caption'); //блок с опис комментариев
 const socialCommentCount = bigPictureSection.querySelector('.social__comment-count'); //блок счетчик комментариев надо скрыть +hidden
 const newCommentsLoader = bigPictureSection.querySelector('.comments-loader');//загрузка новых комментариев надо скрыть +hidden
@@ -25,16 +26,19 @@ const onEscKeydown = (evt) => {
 
 //функция, которая заполняет большое фото
 const openBigPicture = (pictureId) => {
-  const currentPhoto = pictureContainer.find((photo) => photo.id === Number(pictureId)); //находим объект = id
+  const currentPhoto = photoObjectArray.find((photo) => photo.id === Number(pictureId)); //находим объект = id
+  //const currentPicture = generateUserPhoto.find((picture) => picture.id === Number(pictureid));
+
   const socialCommentsFragment = document.createDocumentFragment();//создаем фрагмент - ящик для комментариев
   //дальше, заполняем адрес, лайки, комменты и пр.
   bigPictureImg.src = currentPhoto.url; //подставляем адрес картинки
   likesCount.textContent = currentPhoto.likes; // подставляем количество лайков
-  commentsCountShow.textContent = currentPhoto.comments.length; // подставляем длину комментов
+  commentsCountShow.textContent = currentPhoto.comments.length; // подставляем длину комментов не работает
+  socialCommentTotalCount.textContent = currentPhoto.comments.length;//не работает
   socialComments.innerHTML = ''; // очищаем поле для комментов
 
   currentPhoto.comments.forEach((comment) => { //проходимся по комментариям через .forEach
-    const userCommentElement = socialComments.cloneNode(true); //записываем в новую переменную клон блока комментов, не понимаю зачем клонировать
+    const userCommentElement = socialComment.cloneNode(true); //записываем в новую переменную клон блока комментов, не понимаю зачем клонировать
     userCommentElement.querySelector('.social__picture').src = comment.avatar; //добавляем аватар комментатора
     userCommentElement.querySelector('.social__picture').alt = comment.name; // добавляем имя комментатора
     userCommentElement.querySelector('.social__text').textContent = comment.message; //добавляем сам коммент
@@ -58,7 +62,7 @@ const openBigPicture = (pictureId) => {
 // основная функция, которая открывает. на контейнер где все фото вешаем обработчик с target
 const openPicture = () => {
   pictureContainer.addEventListener('click', (evt) => {
-    //проверка, что точно нажали по пикчер либо на эл внутри по отношению к нему
+    // проверка, что точно нажали по пикчер либо на эл внутри по отношению к нему
     const currentPhoto = evt.target.closest('.picture');
 
     //проверка - тот ли элемент

@@ -17,4 +17,4 @@ photoObjectArray.forEach(({id, url, description, comments, likes}) => {
 
 pictureContainer.append(listFragment); //вставляем клон шаблона в конец контейнера
 
-export {pictureContainer};
+export {pictureContainer, photoObjectArray};
