@@ -5,8 +5,9 @@ const pictureTemplate = document.querySelector('#picture').content.querySelector
 const photoObjectArray = createPhotoObjectArray();
 const listFragment = document.createDocumentFragment(); //пока не разобралась с фрагментом
 
-photoObjectArray.forEach(({url, description, comments, likes}) => {
+photoObjectArray.forEach(({id, url, description, comments, likes}) => {
   const similarPicture = pictureTemplate.cloneNode(true); // клонируем шаблон
+  similarPicture.dataset.pictureId = id;
   similarPicture.querySelector('.picture__img').src = url;
   similarPicture.querySelector('.picture__img').alt = description;
   similarPicture.querySelector('.picture__comments').textContent = comments.length;
@@ -16,4 +17,4 @@ photoObjectArray.forEach(({url, description, comments, likes}) => {
 
 pictureContainer.append(listFragment); //вставляем клон шаблона в конец контейнера
 
-export {pictureContainer};
+export {pictureContainer, photoObjectArray};
