@@ -1,8 +1,6 @@
 import { isEscapeKey } from './util.js';
 import { isHashtagValid, error } from './valid-hashtag';
 
-
-
 const imageUploadForm = document.querySelector('.img-upload__form');//форма
 const imageUploadOverlay = document.querySelector('.img-upload__overlay');//Форма редактирования изображения
 const fileUploadCloseBtn = document.querySelector('.img-upload__cancel');//кнопка закрытия формы для загрузки
@@ -46,7 +44,7 @@ fileUploadControl.addEventListener('change', fileUploadFormOpen);//обрабо�
 
 //Объявляем Pristine и настраиваем
 const pristine = new Pristine(imageUploadForm, {
-  classTo: 'img-upload__field-wrapper'// добавление класс дива
+  classTo: 'img-upload__field-wrapper',// добавление класс дива
   errorTextClass: 'img-upload__field-wrapper--error', //класс для элемента с ошибкой
   errorTextParent: 'img-upload__field-wrapper', //куда выводится текст с ошибкой
   errorTextTag: 'div', //обрамляет текст с ошибкой
@@ -60,16 +58,16 @@ pristine.addValidator(commentInput, (value) => {
 
 //Добавляем слушатель на форму, при неправильно введённых значениях в форму, отправить невозможно
 //в форму передаём ('событие', функцию)
-uploadForm.addEventListener('submit', (evt) => {
+imageUploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   //усл- Если "форма валидна", то выполни следующие действие
   if(pristine.validate()) {
     //У хештега убери пробелы по краям и множественные пробелы замени на одиночный и отправь форму
-    hashtagInput.value = hashtagInput.value.trim().replaceAll(/\s+/g, ' ');
+    hashTagsInput.value = hashTagsInput.value.trim().replaceAll(/\s+/g, ' ');
     // М form.submit() позволяет инициировать отправку формы из JavaScript
-    uploadForm.submit();
+    imageUploadForm.submit();
   }
 });
 
 //добавляем валидатор, кладем (инпут функцию и сообщение об ошибке)
-pristine.addValidator(hashtagsInput, isHashtagValid, error); //второе и третье нужно импортировать
+pristine.addValidator(hashTagsInput, isHashtagValid, error); //второе и третье нужно импортировать
