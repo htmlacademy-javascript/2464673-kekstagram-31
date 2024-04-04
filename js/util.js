@@ -37,11 +37,10 @@ const getRandomArreyElement = (array) => {
   const random = getRandomInteger(min, max);
   return array[random];
 };
+// проверка Escape
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {DESCRIPTION};
-export {MESSAGES};
-export {NAMES};
-export {createPhotoObject};
-export {createCommentObject};
-export {getRandomInteger};
-export {getRandomArreyElement};
+export {DESCRIPTION, MESSAGES, NAMES};
+
+export {isEscapeKey, createPhotoObject, createCommentObject, getRandomInteger, getRandomArreyElement};
+
