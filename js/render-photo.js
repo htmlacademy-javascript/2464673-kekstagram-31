@@ -1,4 +1,5 @@
 import {pictureContainer, photoObjectArray} from './photos.js';
+import {isEscapeKey} from './util.js';
 //переменные
 const bigPictureSection = document.querySelector('.big-picture'); //большое окно, которое мы будем заполнять данными
 const bigPictureImg = bigPictureSection.querySelector('.big-picture__img').querySelector('img'); //адрес изображения
@@ -19,7 +20,7 @@ const onBigPictureCancelClick = () => {
 
 //если мы нажали escape только в это случае делаем closePhoto
 const onEscKeydown = (evt) => {
-  if (evt.key === 'Escape') {
+  if (isEscapeKey(evt)) {
     closePhoto();
   }
 };
