@@ -4,6 +4,7 @@ import {isEscapeKey} from './util.js';
 //переменные
 const maxComment = 5;//кол-во комментов при открытии окна
 let lowRange = 0;
+let highRange = maxComment;
 let commentsCount = 0;
 let comments = [];
 const bigPictureSection = document.querySelector('.big-picture'); //большое окно, которое мы будем заполнять данными
@@ -18,7 +19,6 @@ const socialCaption = bigPictureSection.querySelector('.social__caption'); //б�
 const newCommentsLoaderButton = bigPictureSection.querySelector('.comments-loader');//кнопка загрузки новых комментариев
 const userModalCanselElement = bigPictureSection.querySelector('.big-picture__cancel'); //кнопка закрытия полноэкранного просмотра
 
-
 //функция которя закрывает окно
 const onBigPictureCancelClick = () => {
   closePhoto();
@@ -31,27 +31,28 @@ const onEscKeydown = (evt) => {
   }
 };
 
-const increaseCount = () => {
-  lowRange += maxComment;
-  commentsShownCount.textContent = (commentsCount > lowRange + maxComment) ? lowRange + maxComment : commentsCount;
-  if(commentsCount < lowRange + maxComment) {
-    newCommentsLoaderButton.classList.add('hidden');
-  }
-};
-
-
 const renderFivecomments = () => {
-  const fiveComment = comments.slice(lowRange, lowRange + maxComment); //создаем копию части массива комментов
+  const fiveComment = comments.slice(lowRange, highRange); //создаем копию части массива комментов
   const socialCommentsFragment = document.createDocumentFragment();//создаем фрагмент - ящик для комментариев
   fiveComment.forEach((comment) => { //проходимся по 5 комментариям через .forEach
     const userCommentElement = socialComment.cloneNode(true); //записываем в новую переменную клон блока комментов,
     userCommentElement.querySelector('.social__picture').src = comment.avatar; //добавляем аватар комментатора
     userCommentElement.querySelector('.social__picture').alt = comment.name; // добавляем имя комментатора
     userCommentElement.querySelector('.social__text').textContent = comment.message; //добавляем сам коммент
-
     socialCommentsFragment.append(userCommentElement);//добавляем заполненный li во фрагмент
   });
   socialComments.append(socialCommentsFragment); // дабавляем фрагмент в блок комментов
+};
+
+const increaseCount = () => {
+  lowRange += maxComment;
+  highRange += maxComment;
+  highRange = (commentsCount < highRange) ? commentsCount : highRange;
+  commentsShownCount.textContent = highRange;
+  if(commentsCount <= highRange) {
+    newCommentsLoaderButton.classList.add('hidden');
+  }
+  renderFivecomments();
 };
 
 //функция, которая заполняет большое фото
@@ -63,19 +64,21 @@ const openBigPicture = (pictureId) => {
   likesCount.textContent = currentPhoto.likes; // подставляем количество лайков
   comments = currentPhoto.comments;
   commentsCount = comments.length;
-  commentsShownCount.textContent = 5;// подставляем количество показанных комментов
+  commentsShownCount.textContent = (commentsCount < 5) ? commentsCount : 5;// подставляем количество показанных комментов
   socialCommentTotalCount.textContent = commentsCount;//подставляем общее количество комментов
   socialComments.innerHTML = ''; // очищаем поле для комментов
-  renderFivecomments(comments);//чтобы 5 комментов
+  if(commentsCount <= highRange) {
+    newCommentsLoaderButton.classList.add('hidden');
+  }
+  renderFivecomments();//чтобы 5 комментов
 
   socialCaption.textContent = currentPhoto.description; //добавляем описание
-  // socialCommentCount.classList.add('hidden');//скрываем блок счетчиков
 
   bigPictureSection.classList.remove('hidden'); // открываем большое окно для просмотра фото
   userModalCanselElement.addEventListener('click', onBigPictureCancelClick); //навешиваем обработчик по клику на крестик закрытия фото
   document.body.classList.add('modal-open'); //добавляем класс, чтобы не прокручивался фон
   document.addEventListener('keydown', onEscKeydown);// добавляем обработчик событий для закрытия фото по нажатию esc
-  newCommentsLoaderButton.addEventListener('click', renderFivecomments);
+  // newCommentsLoaderButton.addEventListener('click', renderFivecomments);
   newCommentsLoaderButton.addEventListener('click', increaseCount); // функция, которая будет отображать 5 комментов из общего числа)
 };
 
@@ -99,9 +102,13 @@ function closePhoto() {
   bigPictureSection.classList.add('hidden'); //добавляем класс, который скрывает окно
   userModalCanselElement.removeEventListener('click', onBigPictureCancelClick); // удаляем обработчик закрытия по клику на крестик
   document.removeEventListener('keydown', onEscKeydown); // удаляем обработчик закрытия по нажатию esc
-  // commentsShownCount.textContent = '';
+  newCommentsLoaderButton.removeEventListener('click', renderFivecomments);
+  newCommentsLoaderButton.removeEventListener('click', increaseCount);
   lowRange = 0;
   commentsCount = 0;
+  highRange = maxComment;
+  // comments = [];
+  newCommentsLoaderButton.classList.remove('hidden');
 }
 
 export { openPicture };
